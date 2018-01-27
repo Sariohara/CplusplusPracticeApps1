@@ -69,7 +69,7 @@ int CALLBACK WinMain(
 		szTitle,
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT,
-		500, 100,
+		500, 500,	//window width and height
 		NULL,
 		NULL,
 		hInstance,
@@ -124,13 +124,34 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Here your application is laid out.
 		// For this introduction, we just print out "Hello, Windows desktop!"
 		// in the top left corner.
-		TextOut(hdc,
+		/*TextOut(hdc,
 			5, 5,
-			greeting, _tcslen(greeting));
+			greeting, _tcslen(greeting));*/
 		// End application-specific layout section.
 
 		EndPaint(hWnd, &ps);
 		break;
+	case WM_CREATE:
+	{
+		HMENU hMenuBar = CreateMenu();
+		HMENU hFile = CreateMenu();
+		HMENU hOpen = CreateMenu();
+		HMENU hOptions = CreateMenu();
+
+		//AppendMenu(menuHandler,Flags, Interaction, Menu Name)
+		AppendMenu(hMenuBar, MF_POPUP, (UINT_PTR)hFile, "File");
+		AppendMenu(hMenuBar, MF_POPUP, NULL, "Edit");
+		AppendMenu(hMenuBar, MF_POPUP, (UINT_PTR)hOptions, "Options");
+
+
+		AppendMenu(hFile, MF_STRING, NULL, "Exit");
+		AppendMenu(hOptions, MF_STRING, NULL, "Option 1");
+		AppendMenu(hOptions, MF_STRING, NULL, "Option 2");
+
+		SetMenu(hWnd, hMenuBar);
+
+		break;
+	}
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
